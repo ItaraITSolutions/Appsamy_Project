@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="view_inherit_partner_field" model="ir.ui.view">
+            <field name="name">view.inherit.partner.field</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="/form/sheet/div/div[@class='o_row']" position="after">
+                    <div class="o_row">
+                        <field name="sub_division_id" placeholder="Sub Division" required="True"/>
+                    </div>
+                    <div class="o_row">
+                        <field name="designation_id" placeholder="Designation"/>
+                    </div>
+
+                        <field name = "group_customer_no" placeholder = "Group Customer Number"/>
+                        <field name = "category" placeholder = "Category"/>
+                </xpath>
+
+                <xpath expr="/form/sheet/group/group[2]/field[@name='lang']" position="after">
+                    <field name="grade_type"/>
+                    <field name="buyer_dl"/>
+                    <field name="buyer_dl2"/>
+                    <field name="buyer_mci"/>
+                    <field name="pan"/>
+                    <field name="customer_creation_date"/>
+                </xpath>
+
+                <xpath expr="/form/sheet/group/group[1]/field[@name='category_id']" position="after">
+                    <field name="partner_type" required="True"/>
+                    <field name="site_code"/>
+                </xpath>
+                
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="section_id" required="True"/>
+                </xpath>
+
+            </field>
+        </record>
+
+        <record id="res_partner_grade" model="ir.ui.view">
+            <field name="name">res.partner.grade.form</field>
+            <field name="model">res.partner.grade</field>
+            <field name="arch" type="xml">
+                <form string="Grade">
+                    <sheet>
+
+                        <group colspan="4" col='4'>
+                            <field name='name'/>
+                            <field name="grade_code"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="res_partner_sub_division" model="ir.ui.view">
+            <field name="name">res.partner.sub.division.form</field>
+            <field name="model">res.partner.sub.division</field>
+            <field name="arch" type="xml">
+                <form string="Sub Division">
+                    <sheet>
+
+                        <group colspan="4" col='4'>
+                            <field name='name'/>
+                            <field name="sub_division_code"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+ <record id="res_partner_sub_division_tree" model="ir.ui.view">
+            <field name="name">res.partner.sub.division.tree</field>
+            <field name="model">res.partner.sub.division</field>
+            <field name="arch" type="xml">
+                <tree string="Sub Division">
+                    <field name='name'/>
+                    <field name="sub_division_code"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_sub_division" model="ir.actions.act_window">
+            <field name="name">Sub Division</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.sub.division</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_sub_division" id="menu_sub_division_master_view" parent="contacts.menu_localisation" />
+
+        <record id="res_partner_designation" model="ir.ui.view">
+            <field name="name">res.partner.designation.form</field>
+            <field name="model">res.partner.designation</field>
+            <field name="arch" type="xml">
+                <form string="Designation">
+                    <sheet>
+
+                        <group colspan="4" col='4'>
+                            <field name='name'/>
+                            <field name="designation_code"/>
+                        </group>
+
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="partner_extended_form_view">
+            <field name="name">partner.extended.form.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="view_type">form</field>
+            <field name="arch" type="xml">
+                <xpath expr="//page/group/group/field[@name='property_account_position_id']" position="after">
+                    <field name="cst"/>
+                    <field name="ecc_no"/>
+                    <field name="range"/>
+                    <field name="central_excise"/>
+                    <field name="commodity_code"/>
+                    <group colspan='4' col="2">
+                        <field name="supplier_type_id" options='{"no_open": True}' attrs="{'invisible':[('supplier', '!=', True)]}"/>
+                        <field name="traiff_no"  attrs="{'invisible':[('supplier', '!=', True)]}"/>
+                        <field name="st_code"  attrs="{'invisible':[('supplier', '!=', True)]}"/>
+                    </group>
+                </xpath>
+                 <xpath expr="//field[@name='street']" position="replace">
+                <field name="street" placeholder="Street..." required="True" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='state_id']" position="replace">
+                    <field name="state_id" style="width: 45%%" class="o_address_state" placeholder="State" required="True" options="{&quot;no_open&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}" context="{'country_id': country_id, 'zip': zip}"/>
+                </xpath>
+                <xpath expr="//field[@name='zip']" position="replace">
+                    <field name="zip" style="width: 50%%"  placeholder="ZIP" required="True" class="o_address_zip" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="replace">
+                     <field name="country_id" placeholder="Country" required="True" class="o_address_country" options="{&quot;no_open&quot;: True, &quot;no_create&quot;: True}" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='street2']" position="replace">
+                    <field name="street2" placeholder="Street 2..." required="True" class="o_address_street" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="replace">
+                   <field name="user_id" required="True"/>
+                </xpath>
+ <xpath expr="//field[@name='city']" position="replace">
+                 <field name="city" placeholder="City" invisible="True" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                </xpath>
+                <xpath expr="/form/sheet/div/div[@class='o_row']" position="after">
+                    <div class="o_row">
+                        <field name = "branch_id" placeholder = "Branch Name"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='vat']" position="before">
+                        <field name = "zone_id"/>
+                        <field name = "speciality_id"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="view_branch_tree" model="ir.ui.view">
+            <field name="name">res.partner.branch.tree</field>
+            <field name="model">res.partner.branch</field>
+            <field name="arch" type="xml">
+                <tree string="Branch Master">
+                    <field name='name'/></tree>
+            </field>
+        </record>
+
+       <record id="view_branch_form" model="ir.ui.view">
+            <field name="name">res.partner.branch.form</field>
+            <field name="model">res.partner.branch</field>
+            <field name="arch" type="xml">
+                <form string="Branch Master">
+                    <sheet>
+                    <group colspan="4" col='4'>
+                        <field name='name'/>
+
+                    </group>
+                    </sheet>
+                </form>
+
+            </field>
+        </record>
+
+        <record id="action_Branch_master" model="ir.actions.act_window">
+            <field name="name">Branch Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.branch</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_Branch_master" id="menu_branch_master_menu" parent="contacts.menu_localisation"/>
+
+
+        <record model="ir.ui.view" id="res_partner_inherit_view">
+            <field name="name">res.partner.inherit.view</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+
+
+            <field name="mobile" position="replace">
+               <field name="mobile" required='1' widget="phone"/>
+            </field>
+
+            <field name="email" position="replace">
+                <field name="email" widget='email' required='1' />
+            </field>
+            <xpath expr="//form/sheet/group/group/div/field[@name='city']" position="after">
+<field name="city_id"  style="width: 100%%" placeholder="City" required="True" attrs="{'readonly': [('type', '=', 'contact'),('parent_id', '!=', False)]}"/>
+                <field name="district_id"  placeholder="District" style="width: 50%%" />
+                <field name="area_id" placeholder="Area" style="width: 50%%" />
+            </xpath>
+            </field>
+        </record>
+
+
+
+        <record id="view_res_partner_filter_inherits" model="ir.ui.view">
+            <field name="name">res.partner.inherit.filter</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter"/>
+            <field name="arch" type="xml">
+                <xpath expr="/search/group/filter[@name='group_country']" position="after">
+                    <filter string="Area" domain="[]" context="{'group_by':'area_id'}"/>
+                    <filter string="Sale Team" domain="[]" context="{'group_by':'section_id'}"/>
+                </xpath>
+                <xpath expr="/search[@string ='Search Partner']" postion="after">
+                    <field name="area_id" string= "Area"/>
+                </xpath>
+            </field>
+        </record>
+
+       <record id="view_city_tree" model="ir.ui.view">
+            <field name="name">city.tree</field>
+            <field name="model">city.master</field>
+            <field name="arch" type="xml">
+                <tree string="City Master">
+                    <field name='name'/>
+                </tree>
+            </field>
+        </record>
+
+
+       <record id="view_city_form" model="ir.ui.view">
+            <field name="name">city.form</field>
+            <field name="model">city.master</field>
+            <field name="arch" type="xml">
+                <form string="City Master">
+                    <sheet>
+                    <group colspan="4" col='4'>
+                        <field name='name'/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_city_master" model="ir.actions.act_window">
+            <field name="name">City Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">city.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_city_master" id="menu_city_master_view" parent="contacts.menu_localisation" sequence="8"/>
+
+
+       <record id="view_district_tree" model="ir.ui.view">
+            <field name="name">district.tree</field>
+            <field name="model">district.master</field>
+            <field name="arch" type="xml">
+                <tree string="District Master">
+                    <field name='name'/>
+                    <field name='district_code'/>
+                    <field name='company_id'/>
+                </tree>
+            </field>
+        </record>
+
+
+       <record id="view_district_form" model="ir.ui.view">
+            <field name="name">district.form</field>
+            <field name="model">district.master</field>
+            <field name="arch" type="xml">
+                <form string="District Master">
+                    <sheet>
+                    <group colspan="4" col='4'>
+                        <field name='name'/>
+                        <field name='district_code'/>
+                        <field name='company_id'/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_district_master" model="ir.actions.act_window">
+            <field name="name">District Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">district.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_district_master" id="menu_district_master_view" parent="contacts.menu_localisation" sequence="1" />
+
+
+
+       <record id="view_area_tree" model="ir.ui.view">
+            <field name="name">area.tree</field>
+            <field name="model">area.master</field>
+            <field name="arch" type="xml">
+                <tree string="Area Master">
+                    <field name='name'/>
+                    <field name='area_code'/>
+                </tree>
+            </field>
+        </record>
+
+       <record id="view_area_form" model="ir.ui.view">
+            <field name="name">area.form</field>
+            <field name="model">area.master</field>
+            <field name="arch" type="xml">
+                <form string="District Master">
+                    <sheet>
+                    <group colspan="4" col='4'>
+                        <field name='name'/>
+                    <field name='area_code'/>
+                    <field name='company_id'/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_area_master" model="ir.actions.act_window">
+            <field name="name">Area Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">area.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_area_master" id="menu_area_master_view" parent="contacts.menu_localisation" sequence="6"/>
+
+
+ <record id="view_speciality_tree" model="ir.ui.view">
+            <field name="name">speciality.master.tree</field>
+            <field name="model">speciality.master</field>
+            <field name="arch" type="xml">
+                <tree string="Speciality Master">
+                    <field name='name'/>
+                    <field name='speciality_code'/>
+                </tree>
+            </field>
+        </record>
+
+       <record id="view_speciality_form" model="ir.ui.view">
+            <field name="name">speciality.master.form</field>
+            <field name="model">speciality.master</field>
+            <field name="arch" type="xml">
+                <form string="Speciality Master">
+                    <sheet>
+                    <group colspan="4" col='4'>
+                        <field name='name'/>
+                    <field name='speciality_code'/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_speciality_master" model="ir.actions.act_window">
+            <field name="name">Speciality Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">speciality.master</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_speciality_master" id="menu_speciality_master_view" parent="contacts.menu_localisation" />
+       <record id="view_supplier_type_tree" model="ir.ui.view">
+            <field name="name">supplier.type.tree</field>
+            <field name="model">supplier.type</field>
+            <field name="arch" type="xml">
+                <tree string="Supplier Type">
+                    <field name='name'/>
+                    <field name='code'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_supplier_type_form" model="ir.ui.view">
+            <field name="name">supplier.type.form</field>
+            <field name="model">supplier.type</field>
+            <field name="arch" type="xml">
+                <tree string="Supplier Type">
+                    <field name='name'/>
+                    <field name='code'/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="action_supplier_type" model="ir.actions.act_window">
+            <field name="name">Supplier Type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">supplier.type</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+
+         <record id="view_res_partner_zone_tree_field" model="ir.ui.view">
+            <field name="name">view.res.partner.zone.tree</field>
+            <field name="model">res.partner.zone</field>
+            <field name="arch" type="xml">
+                <tree string="Zone Master">
+                    <field name='name'/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="view_res_partner_zone_form_field" model="ir.ui.view">
+        <field name="name">view.res.partner.zone.form</field>
+        <field name="model">res.partner.zone</field>
+        <field name="arch" type="xml">
+                <form string="Zone Master">
+                    <sheet>
+                    <group colspan="4" col='4'>
+                        <field name='name'/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_res_partner_zone_master" model="ir.actions.act_window">
+            <field name="name">Zone Master</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner.zone</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="action_res_partner_zone_master" id="menu_zone_master_view" parent="contacts.menu_localisation" />
+        <menuitem id="menu_supplier_type_master" name="Supplier Type"
+            parent="purchase.menu_purchase_config" sequence="80" groups="purchase.group_purchase_manager"/>
+        <menuitem action="action_supplier_type" id="menu_supplier_type" parent="menu_supplier_type_master" sequence="1" />
+    </data>
+</odoo>
