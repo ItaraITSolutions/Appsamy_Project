@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_supplier_type_user,supplier.type,model_supplier_type,,1,1,1,0
+access_hod_type_user,hod.type,model_hod_type,,1,1,1,0
+access_sub_division_user,sub.division,model_sub_division,,1,1,1,0
+access_grade_master_user,grade.master,model_grade_master,,1,1,1,0
+access_speciality_master_user,speciality.master,model_speciality_master,,1,1,1,0
+access_city_master_user,city.master,model_city_master,,1,1,1,0
+access_area_master_user,area.master,model_area_master,,1,1,1,0
